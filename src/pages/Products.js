@@ -12,6 +12,7 @@ const data = [
 ]
 
 const Products = () => { 
+  const [openPopup,setPopUp] = useState(false);
   return (
     <Wrapper> 
       <div className="products-container">
@@ -22,7 +23,7 @@ const Products = () => {
                 <i><FaSearch /></i>
               </div>
               <div className='right-container'> 
-                <Link className='btn-create-prd' to='/createorder'>Create Products</Link>
+                <Link className='btn-create-prd'  onClick={()=>setPopUp(true)}>Create Products</Link>
                 <div className='right-filter'>
 
                  <div className="sort-btn">
@@ -45,17 +46,23 @@ const Products = () => {
 
 
             <div className="product-data">
-                <ProductCard/>
-                <ProductCard/>
-                <ProductCard/>
-                <ProductCard/>
-                <ProductCard/>
-                <ProductCard/>
+                <ProductCard/> 
             </div>
+
+
       </div>
 
-      <div className="popup-container-product">
-        <PopupProducts/>
+
+      <div className={openPopup ?"popup-container-product":"popup-none"}>
+        {
+            <PopupProducts setPopUp={setPopUp}/>
+        }
+      </div>
+
+      <div>
+        {
+          // <pop
+        }
       </div>
     </Wrapper>
   )
@@ -138,6 +145,9 @@ background-color: aliceblue;
 .right-filter{
   display: flex;
   gap: 10px;
+}
+.popup-none{
+  display: none;
 }
 
 @media screen and (max-width:767px) {

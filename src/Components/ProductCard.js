@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import PoppupDeleted from './PoppupDeleted';
 
 
 
 const ProductCard = () => {
+
+    const [PopupDelete,setpopupDelete] = useState(false);
+ 
   return (
     <Wrapper>
         <div className='product-container-list'>
@@ -48,8 +52,8 @@ const ProductCard = () => {
         </div>
         </div>
         <div className='btn-list'>
-            <button><FaEdit /></button>
-            <button><MdDelete /></button>
+            <button onClick={()=>setpopupDelete(true)}><FaEdit /></button>
+            <button ><MdDelete /></button>
         </div>
     </Wrapper>
   )
@@ -143,4 +147,9 @@ margin-bottom: 15px;
     margin-right: 10px;
     border-radius: 10px;
 }
+.popup-successfull{
+    position: relative;    
+
+} 
+
 `
