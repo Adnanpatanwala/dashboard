@@ -1,22 +1,18 @@
-import React, { useState } from 'react'
+import React, { useReducer, useState } from 'react'
 import styled from 'styled-components';
 import { IoMdCloseCircleOutline } from "react-icons/io";
-
+import ItemsContent from './ItemsContent';
+import axios from 'axios'
+import { UseProductsContext } from '../Context/ProductsContext';
+ 
 
 const PopupProducts = ({setPopUp}) => {
+  const {handleSubmit,handlerChanges,category,title,description,fit,fabric,wash,pattern,handlerImage,differentType,handlerAdd} = UseProductsContext();
+ 
+ 
 
-  const [Image,setImage] = useState([]);
 
-  const handlerImage = (e) =>{
-     const file  = e.target.files[0];
-     const reader = new FileReader();
-     reader.onloadend = () =>{
-      setImage(reader.result);
-     }
-     if(file){
-      reader.readAsDataURL(file)
-     } 
-}
+ 
 
   
   return (
@@ -26,11 +22,11 @@ const PopupProducts = ({setPopUp}) => {
             <div className="header-popup">
               <div className='category-popup'>
                 <label htmlFor="category" className='popup-label'>category</label>
-                <input type="text" className='input-popup'/>
+                <input type="text" className='input-popup' value={category} onChange={(e)=>handlerChanges("category",e)}/>
               </div>
               <div className='title-popup'>
               <label htmlFor="title" className='popup-label'>Title</label>
-                <input type="text" className='input-popup' />
+                <input type="text" className='input-popup' value={title} onChange={(e)=>handlerChanges("title",e)} />
               </div> 
             </div>
 
@@ -41,12 +37,12 @@ const PopupProducts = ({setPopUp}) => {
 
               <div>
                 <label htmlFor="category" className='popup-label'>Color</label>
-                <input type="text" className='input-popup'/>
+                <input type="text" className='input-popup' value={differentType.color} onChange={(e)=>handlerChanges("colors",e)}/>
               </div> 
 
               <div className='inventory'>
                 <label htmlFor="category" className='popup-label'>inventory</label>
-                <input type="text" className='input-popup'/>
+                <input type="text" className='input-popup' value={differentType.inventory} onChange={(e)=>handlerChanges("inventory",e)}/>
               </div>
 
               </div>
@@ -56,19 +52,20 @@ const PopupProducts = ({setPopUp}) => {
  
               <div className='inventory'>
                 <label htmlFor="category" className='popup-label'>Size</label>
-                <select name="" id="" className='select-size'>
-                  <option value="">small</option>
-                  <option value="">medium</option>
-                  <option value="">large</option>
-                  <option value="">XL</option>
-                  <option value="">XXL</option>
-                  <option value="">XXXL</option>
+                <select name="" id="" className='select-size' value={differentType.size} onChange={(e)=>handlerChanges("size",e)}>
+                  <option value="" disabled selected hidden >Select</option>
+                  <option value="small">small</option>
+                  <option value="medium">medium</option>
+                  <option value="large">large</option>
+                  <option value="XL">XL</option>
+                  <option value="XXL">XXL</option>
+                  <option value="XXXL">XXXL</option>
                 </select> 
               </div>
 
               <div>
                 <label htmlFor="category" className='popup-label'>Price</label>
-                <input type="text" className='input-popup'/>
+                <input type="text" className='input-popup' value={differentType.price} onChange={(e)=>handlerChanges("price",e)}/>
               </div>
 
               </div>
@@ -79,20 +76,12 @@ const PopupProducts = ({setPopUp}) => {
                accept="image/*"
               onChange={handlerImage}
               />
-              <button className='add-color'>Add</button>
+              <button className='add-color' onClick={()=>handlerAdd()}>Add</button>
             </div>
 
 
               <div className="bottom-middle-container">
- 
-              <div className="items-inv">
-                <div className='item-inv-color'></div>
-                <p>10</p>
-                <p>small</p>
-                <p>₹100</p>
-                <button>X</button>
-              </div>
-               
+                <ItemsContent Image={differentType.Image}/>
               </div>
             </div>
 
@@ -102,20 +91,96 @@ const PopupProducts = ({setPopUp}) => {
             <div className="middle-container-2">
                <div className="description">
                <label htmlFor="category" className='popup-label'>description</label>
-                 <textarea name="" id=""></textarea>
+                 <textarea name="" id="" value={description} onChange={(e)=>handlerChanges("description",e)}></textarea>
                </div>
             </div>
 
+            <div className="specification">
 
-            <button className='create-btn'>Create</button>
+              <div className="specification-content">
+              <label htmlFor="" className='specification-label'>Fit</label>
+              <select name="" id="" className='specification-select' value={fit} onChange={(e)=>handlerChanges("fit",e)}> 
+              <option value="" disabled selected hidden >Select</option>
+                <option value="Relaxed fit">Relaxed fit</option>
+                <option value="Slim fit">Slim fit</option>
+                <option value="Regular fit">Regular fit</option>
+                <option value="Custom fit">Custom fit</option>
+              </select>
+              </div>
+
+
+              <div className="specification-content">
+              <label htmlFor="" className='specification-label'>Fabric</label>
+              <select name="" id="" className='specification-select' value={fabric} onChange={(e)=>handlerChanges("fabric",e)}> 
+              <option value="" disabled selected hidden >Select</option>
+                <option value="100% Cotton">100% Cotton</option>
+                <option value="Polyester">Polyester</option>
+                <option value="Blend">Blend</option>
+                <option value="Silk">Silk</option> 
+                <option value="Linen">Linen</option>
+              </select>
+              </div>
+
+              <div className="specification-content">
+              <label htmlFor="" className='specification-label'>Wash</label>
+              <select name="" id="" className='specification-select' value={wash} onChange={(e)=>handlerChanges("wash",e)}> 
+                <option value="" disabled  hidden >Select</option> 
+                <option value="Machine Wash">Machine Wash</option>
+                <option value="Hand Wash">Hand Wash</option>
+                <option value="Dry Clean">Dry Clean</option>
+                <option value="No Wash Required">No Wash Required</option>
+              </select>
+              </div>
+
+              <div className="specification-content">
+              <label htmlFor="" className='specification-label'>Pattern</label>
+                <input type="text" className='pattern' value={pattern} onChange={(e)=>handlerChanges("pattern",e)}/>
+              </div>
+
+
+            </div>
+
+
+            <button className='create-btn' onClick={()=>handleSubmit()}>Create</button>
         </div>
     </Wrapper>
   )
 }
 
+
+
 export default PopupProducts;
 
 const Wrapper = styled.div` 
+.img-inv{
+  display: flex;
+  gap: 10px;
+}
+.img-cont{
+  width: 30px;
+  height: 30px;
+  img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+.specification-select,.pattern{
+  font-size: 12px;
+  padding: 2px 5px;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+.specification-label{
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+}
+.specification{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
  .close{
   display: block;
   margin-left: auto;
@@ -135,9 +200,9 @@ const Wrapper = styled.div`
     padding: 10px 20px;
     box-sizing: border-box;
     border-radius: 15px;
-    max-height: 500px;
+    
     overflow-y: auto;
-    max-width: 600px;
+    width: 600px;
 }
 .bottom-middle-container{
   flex-wrap: wrap;
@@ -176,7 +241,7 @@ const Wrapper = styled.div`
     border-radius: 5px;
     color: white;
     cursor: pointer;
-    margin-top: 12px;
+    margin-top: 12px; 
   }
   .middle-container{
     margin-top: 20px;
@@ -247,5 +312,6 @@ const Wrapper = styled.div`
     padding: 2px 10px;
     border: none;
     border-radius: 5px;
+    margin-top: 20px;
   }
 `
