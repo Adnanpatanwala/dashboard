@@ -3,22 +3,24 @@ import styled from 'styled-components'
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import PoppupDeleted from './PoppupDeleted';
+import { UseProductsContext } from '../Context/ProductsContext';
 
 
 
-const ProductCard = () => {
+const ProductCard = ({_id,image,inventory}) => {
 
     const [PopupDelete,setpopupDelete] = useState(false);
+    const {deleteProduct} = UseProductsContext();
  
   return (
     <Wrapper>
         <div className='product-container-list'>
             <div className="img-container">
-                <img src="" alt="product img" />
+                <img src={image[0]} alt="product img" />
             </div>
             <div>
 
-        <h5 className='header-id'>id : ajdlfkjadl54654</h5>
+        <h5 className='header-id'>id : {_id}</h5>
         <div className="container-products">
             <h3>Red tshirt</h3>
             <span>
@@ -30,22 +32,17 @@ const ProductCard = () => {
             <div className="colors-available-container">
             <label htmlFor="" className='label-cust'>Availabel colors : </label>
             <div className="color-available">
-                <div className="back-color">
-                <span className='color-bck'></span>
-                <span className="avai-text">10</span>
-                <span className='size-color'>small</span>
-                </div> 
-                <div className="back-color">
-                <span className='color-bck'></span>
-                <span className="avai-text">10</span>
-                <span className='size-color'>small</span>
-                </div> 
-                <div className="back-color">
-                <span className='color-bck'></span>
-                <span className="avai-text">10</span>
-                <span className='size-color'>small</span>
-                </div> 
-                 
+
+                {
+                    inventory.map((item,index)=>{
+                        return <div className="back-color" key={index}>
+                        <span className='color-bck' style={{backgroundColor:`${Object.keys(item)}`}}></span>
+                        <span className="avai-text">{Object.values(item)}</span>
+                        <span className='size-color'>small</span>
+                        </div>
+                    })
+                }
+                    
             </div>
             </div>
             </div>
@@ -53,7 +50,7 @@ const ProductCard = () => {
         </div>
         <div className='btn-list'>
             <button onClick={()=>setpopupDelete(true)}><FaEdit /></button>
-            <button ><MdDelete /></button>
+            <button onClick={()=>deleteProduct({id:_id})} ><MdDelete /></button>
         </div>
     </Wrapper>
   )
@@ -101,8 +98,7 @@ margin-bottom: 15px;
 } 
  .color-bck{
     width: 20px;
-    height: 20px;
-    background-color: black;
+    height: 20px; 
     border-radius: 50%;
 
 }
@@ -146,6 +142,14 @@ margin-bottom: 15px;
 .img-container{ 
     margin-right: 10px;
     border-radius: 10px;
+    width: 80px;
+    height: 80px;
+    img{
+        border-radius: 8px;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
 }
 .popup-successfull{
     position: relative;    

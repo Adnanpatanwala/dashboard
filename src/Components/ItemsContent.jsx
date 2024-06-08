@@ -1,22 +1,17 @@
 import React from 'react'
+import { UseProductsContext } from '../Context/ProductsContext';
+
 
 const ItemsContent = ({Image}) => {
+  const {handleRemove} =  UseProductsContext();
+ 
   return (
-    <div className="items-inv">
-                <div className='item-inv-color' style={{backgroundColor:"red"}}></div>
+    <div className="items-inv"> 
                 <div className="img-inv">
-                    {
-                        Image.map((item)=>{
-                            return <div className='img-cont'>
-                                    <img src={item} alt="" />
-                                  </div>
-                        })
-                    }
+                     <div className='img-cont'>
+                       <img src={Image} alt="" />
+                      </div>
                 </div>
-                <p>10</p>
-                <p>small</p>
-                <p>₹100</p>
-                <button>X</button>
     </div>
                
   )

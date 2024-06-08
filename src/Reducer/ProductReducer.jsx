@@ -1,3 +1,4 @@
+
 export const reducer=(state,action)=>{
     if(action.type==="ADD_PRODUCTS"){
       const {name,value} = action.payload;
@@ -5,7 +6,10 @@ export const reducer=(state,action)=>{
     }
     
     if(action.type==="ADD_COLORS"){
-      return {...state,differentType:[...state.differentType,action.payload]}
+      return {...state,Images:[...action.payload]}
+    }
+    if(action.type==="REMOVE_ITEM"){
+      return {...state,Images:[]}
     }
 
     

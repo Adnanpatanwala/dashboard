@@ -7,12 +7,15 @@ import Header from '../Components/Header';
 import {Link} from 'react-router-dom'
 import CreateOrder from '../Components/CreateOrder';
 
-const data = [
+import ProductContainer from '../Components/ProductContainer';
+import { UseProductsContext } from '../Context/ProductsContext';
 
-]
+ 
 
 const Products = () => { 
   const [openPopup,setPopUp] = useState(false);
+  const {setFilter,filter} = UseProductsContext();
+ 
   return (
     <Wrapper> 
       <div className="products-container">
@@ -35,7 +38,7 @@ const Products = () => {
               </div>
               <div className="category-container">
               <label htmlFor="category" className='category'>category : </label>
-              <select name="" id="">
+              <select name="" id="" value={filter} onChange={(e)=>setFilter(e.target.value)}>
                 <option value="">All</option>
                 <option value="">T-shirt</option>
               </select>
@@ -46,7 +49,7 @@ const Products = () => {
 
 
             <div className="product-data">
-                <ProductCard/> 
+              <ProductContainer/>
             </div>
 
 
